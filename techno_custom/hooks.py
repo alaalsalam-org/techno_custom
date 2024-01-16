@@ -94,13 +94,26 @@ app_license = "MIT"
 # ---------------
 # Override standard doctype classes
 
-# override_doctype_class = {
-#	"ToDo": "custom_app.overrides.CustomToDo"
-# }
+override_doctype_class = {
+    "Journal Entry": "techno_custom.overrides.journal_entry.JournalEntryCustom"
+}
 
 # Document Events
 # ---------------
 # Hook on document methods and events
+
+doc_events = {
+     "Journal Entry": {
+         "validate": "techno_custom.overrides.journal_entry.set_post_data",
+    
+    },
+	# "*": {
+	# 	"on_update": "method",
+	# 	"on_cancel": "method",
+	# 	"on_trash": "method"
+	# }
+}
+
 
 # doc_events = {
 #	"*": {
