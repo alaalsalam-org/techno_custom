@@ -102,17 +102,17 @@ override_doctype_class = {
 # ---------------
 # Hook on document methods and events
 
-doc_events = {
-     "Journal Entry": {
-         "validate": "techno_custom.overrides.journal_entry.set_post_data",
+# doc_events = {
+#      "Journal Entry": {
+#          "validate": "techno_custom.overrides.journal_entry.set_post_data",
     
-    },
+#     },
 	# "*": {
 	# 	"on_update": "method",
 	# 	"on_cancel": "method",
 	# 	"on_trash": "method"
 	# }
-}
+# }
 
 
 # doc_events = {

@@ -1,11 +1,18 @@
 from erpnext.accounts.doctype.journal_entry.journal_entry import JournalEntry
+import frappe
+from datetime import datetime
 
 
 from frappe.utils import cint, cstr, flt, fmt_money, formatdate, get_link_to_form, nowdate
 from erpnext.accounts.general_ledger import make_gl_entries
 
 class JournalEntryCustom(JournalEntry):
-	 
+	def validate(self):
+		super(JournalEntryCustom, self).validate()
+
+		set_post_data(self)
+		validate_post_data(self)
+  
 	def make_gl_entries(self, cancel=0, adv_adj=0):
 
 		gl_map = self.build_gl_map()
@@ -58,7 +65,21 @@ class JournalEntryCustom(JournalEntry):
 		return gl_map
 
 
-def set_post_data(doc, method):
+def set_post_data(doc):
     for d in doc.get("accounts"):
         if not d.posting_date:
             d.posting_date = doc.posting_date
+
+def validate_post_data(self):
+    posting_date = self.posting_date
+    accounts = self.accounts
+    if posting_date and accounts:
+        posting_date = datetime.strptime(posting_date, "%Y-%m-%d")
+        month = posting_date.month
+        year = posting_date.year
+        for account in accounts:
+            account_date = account.posting_date
+            account_date = datetime.strptime(account_date, "%Y-%m-%d")
+            if account_date.month != month or account_date.year != year:
+                frappe.throw("Posting date in accounts table should be in the same month")
+            
